@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#define ArrSize 5000
+
+void quickSort(int arr[], long int low, long int high);
+int partition (int arr[], int low, int high);
+void swap(int* a, int* b);
+
+// Array filler function
+int arrayFill (int v[], int n, int max) {
+
+	for (int i = 0; i < n; i++) {
+		v[i] = (rand() % max) + 1;
+	}
+}
+
+int main () {
+	
+	// Setting whats necessary to make an unique array everytime
+	srand(time(NULL));
+
+	// Defining the array attributes and filling it
+	int v[ArrSize];
+	arrayFill(v, ArrSize, 30000);
+
+	// Setuping the clock which will tell the exact runtime
+	clock_t t;	
+
+	// Start of the Sorting part, time must start here.
+
+	quickSort(v, 0, ArrSize-1);
+
+	t = clock();
+
+	for (int g = 0; g < ArrSize-1; g++){
+		printf("%d\n", v[g]);
+	}
+
+	printf("Tempo de execucao: %lf", ((double)t)/((CLOCKS_PER_SEC/1000)));
+}
+
+void swap(int* a, int* b) {
+   int t = *a;
+   *a = *b;
+   *b = t;
+}
+
+int partition (int arr[], int low, int high) {
+   int pivot = arr[high];
+   int i = (low - 1);
+   for (int j = low; j <= high- 1; j++){
+      if (arr[j] <= pivot){
+         i++;
+         swap(&arr[i], &arr[j]);
+      }
+   }
+   swap(&arr[i + 1], &arr[high]);
+   return (i + 1);
+}
+
+void quickSort(int arr[], long int low, long int high){
+   if (low < high){
+      long int pi = partition(arr, low, high);
+      quickSort(arr, low, pi - 1);
+      quickSort(arr, pi + 1, high);
+   }
+}
