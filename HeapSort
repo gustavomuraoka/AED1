@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#define ArrSize 20000
+
+void BuildHeap(int *a,int n);
+void swap(int *a,int *b);
+void HeapSort(int *a,int n);
+void HeapAdjust(int *a,int i,int n);
+
+// Array filler function
+int arrayFill (int v[], int n, int max) {
+
+	for (int i = 0; i < n; i++) {
+		v[i] = (rand() % max) + 1;
+	}
+}
+
+int main () {
+	
+	// Setting whats necessary to make an unique array everytime
+	srand(time(NULL));
+
+	// Defining the array attributes and filling it
+	int v[ArrSize];
+	arrayFill(v, ArrSize, 30000);
+
+	// Setuping the clock which will tell the exact runtime
+	clock_t t;	
+
+	// Start of the Sorting part, time must start here.
+
+	HeapSort(v, ArrSize);
+
+	t = clock();
+
+	for (int g = 0; g < ArrSize-1; g++){
+		printf("%d\n", v[g]);
+	}
+
+	printf("Tempo de execucao: %lf", ((double)t)/((CLOCKS_PER_SEC/1000)));
+}
+
+void BuildHeap(int *a,int n){
+
+    for (int i = n - 1; i >= 0; i--) {
+        HeapAdjust(a, i, n);
+    }
+
+}
+
+void swap(int *a,int *b){
+
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void HeapSort(int *a,int n){
+
+    BuildHeap(a, n);
+    for (int i = n - 1; i >= 0; i--) {
+
+        swap(&a[0], &a[i+1]);
+
+        HeapAdjust(a, 0, i );
+    }
+}
+
+void HeapAdjust(int *a, int i, int n){
+
+    int lchild = 2 * i;
+    int rchild = 2 * i + 1;
+    int max = i;
+
+    if (i <= n) {
+        if (lchild <= n && a[lchild] > a[max]) {
+            max = lchild;
+        }
+
+        if (rchild <= n && a[rchild] > a[max]) {
+            max = rchild;
+        }
+
+        if (i != max) {
+            swap(&a[i], &a[max]);
+            HeapAdjust(a, max, n);
+        }
+    }
+}
