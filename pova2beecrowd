@@ -1,0 +1,63 @@
+#include <stdio.h>
+ 
+int main() {
+ 
+
+    // setting variables
+    int r = 0, c = 0, v = 0, w = 0, p = 0;
+    
+    scanf("%d %d", &r, &c);
+
+    int graph[r][r];
+
+
+    // filling the graph with 0's
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < r; j++) {
+            graph[i][j] = 0;
+        }
+    }
+
+
+    // Now getting the actual values
+    for (int k = 0; k < c; k++){
+
+        scanf("%d %d %d", &v, &w, &p);
+
+        graph[v-1][w-1] = p;
+
+    }
+
+    // Setting the vars to solve the problem
+    int result = -9999, lowval = 9999;
+
+    //This loop finds the lowest value between all "prices" and removes all the ones that are higher
+    for (int i = r-1; i >= 0; i--) { //column
+        
+        for (int j = r-1; j >= 0; j--) { // line
+
+            if (graph[i][j] != 0 && graph[i][j] < lowval) { // finds the lowest value
+                lowval = graph[i][j];
+            }
+        }
+
+        result = result + lowval;
+
+        for (int j = 0; j < r; j++) { // line
+
+            if (graph[i][j] != lowval) {  // remove price from graph
+                graph[i][j] = 0;
+            }
+
+        lowval = 9999;
+        }    
+    }
+
+
+
+
+
+    printf("%d\n",result);
+
+    return 0;
+}
